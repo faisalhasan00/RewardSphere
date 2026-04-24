@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, Zap, Heart, ShieldSecurity, Users } from 'lucide-react';
+import { Target, Zap, Heart, ShieldCheck, Users } from 'lucide-react';
 
 export default function AboutPage() {
   return (
@@ -86,7 +86,7 @@ export default function AboutPage() {
       <section className="py-24 bg-gray-50 border-t border-gray-100">
          <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-10">
             <div className="flex items-center gap-4 text-gray-400">
-               <ShieldSecurity className="h-8 w-8" />
+               <ShieldCheck className="h-8 w-8" />
                <p className="text-sm font-bold max-w-xs">Data encrypted with industry standard AES-256 protocols.</p>
             </div>
             <div className="flex items-center gap-4 text-gray-400">
