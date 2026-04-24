@@ -1,0 +1,380 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- ENUMS ---
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  EDITOR
+  FINANCE
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum NetworkStatus {
+  ACTIVE
+  MAINTENANCE
+  INACTIVE
+}
+
+enum ConversionStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+  CREDITED
+  REVERSED
+}
+
+enum TransactionType {
+  CASHBACK
+  REFERRAL_BONUS
+  WITHDRAWAL
+  ADJUSTMENT
+  REVERSAL
+  BONUS
+}
+
+enum WithdrawalStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  REJECTED
+}
+
+enum NotificationType {
+  CASHBACK_PENDING
+  CASHBACK_CONFIRMED
+  PAYMENT_PROCESSED
+  NEW_DEAL
+  ALERT
+}
+
+// --- MODELS ---
+
+model User {
+  id                String            @id @default(uuid())
+  email             String            @unique
+  password          String
+  name              String?
+  phone             String?           @unique
+  status            UserStatus        @default(ACTIVE)
+  role              UserRole          @default(USER)
+  isPhoneVerified   Boolean           @default(false)
+  otpCode           String?           // Hashed
+  otpExpiry         DateTime?
+  loginAttempts     Int               @default(0)
+  lockUntil         DateTime?
+  refreshToken      String?           // Hashed
+  
+  referralCode      String            @unique
+  referrerId        String?
+  
+  // Relations
+  referrer          User?             @relation("UserReferrals", fields: [referrerId], references: [id])
+  referredUsers     User[]            @relation("UserReferrals")
+  clicks            Click[]
+  conversions       Conversion[]
+  walletTransactions WalletTransaction[]
+  withdrawals       Withdrawal[]
+  notifications     Notification[]
+  referralRecord    Referral?         @relation("ReferredUser")
+  referralsMade     Referral[]        @relation("Referrer")
+  wallet            Wallet?
+
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([email])
+  @@index([referralCode])
+}
+
+model AffiliateNetwork {
+  id                String            @id @default(uuid())
+  name              String            @unique // e.g., Cuelinks
+  slug              String            @unique
+  status            NetworkStatus     @default(ACTIVE)
+  baseUrl           String?
+  apiKey            String?
+  apiSecret         String?
+  trackingDomain    String?           // Domain for affiliate links
+  
+  stores            Store[]
+  conversions       Conversion[]
+
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+}
+
+model Category {
+  id                String            @id @default(uuid())
+  name              String            @unique
+  slug              String            @unique
+  description       String?
+  parentId          String?
+  
+  parent            Category?         @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children          Category[]        @relation("CategoryHierarchy")
+  
+  stores            Store[]
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([slug])
+}
+
+model Store {
+  id                String            @id @default(uuid())
+  name              String
+  slug              String            @unique
+  logoUrl           String?
+  description       String?
+  affiliateUrl      String            // Base affiliate URL or logic
+  isActive          Boolean           @default(true)
+  isFeatured        Boolean           @default(false)
+  
+  networkId         String
+  network           AffiliateNetwork  @relation(fields: [networkId], references: [id])
+  
+  categoryId        String?
+  category          Category?         @relation(fields: [categoryId], references: [id])
+  
+  deals             Deal[]
+  clicks            Click[]
+  conversions       Conversion[]
+
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([name])
+}
+
+model Deal {
+  id                String            @id @default(uuid())
+  title             String
+  description       String?
+  cashbackValue     BigInt            // In paise
+  isPercentage      Boolean           @default(true)
+  couponCode        String?
+  expiryDate        DateTime?
+  isActive          Boolean           @default(true)
+  isFeatured        Boolean           @default(false)
+  isTrendingOverride Boolean          @default(false)
+  
+  storeId           String
+  store             Store             @relation(fields: [storeId], references: [id])
+  
+  clicks            Click[]
+
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([storeId])
+  @@index([expiryDate])
+}
+
+model Click {
+  id                String            @id @default(uuid())
+  userId            String?
+  user              User?             @relation(fields: [userId], references: [id])
+  sessionId         String?           // For Guest Tracking
+  
+  storeId           String
+  store             Store             @relation(fields: [storeId], references: [id])
+  
+  dealId            String?
+  deal              Deal?             @relation(fields: [dealId], references: [id])
+  
+  clickId           String            @unique // Unique ID passed to affiliate network (subid)
+  ipAddress         String?
+  userAgent         String?
+  referrerUrl       String?
+
+  conversion        Conversion?
+
+  createdAt         DateTime          @default(now())
+
+  // Optimized for high-volume scale
+  @@index([userId, createdAt])
+  @@index([sessionId, createdAt])
+  @@index([clickId])
+}
+
+model Conversion {
+  id                String            @id @default(uuid())
+  
+  // Link to the original click that generated this conversion
+  clickId           String            @unique
+  click             Click             @relation(fields: [clickId], references: [id])
+  
+  userId            String
+  user              User              @relation(fields: [userId], references: [id])
+  
+  storeId           String
+  store             Store             @relation(fields: [storeId], references: [id])
+  
+  networkId         String
+  network           AffiliateNetwork  @relation(fields: [networkId], references: [id])
+
+  // Network Specific Data
+  networkTransactionId String         // Unique ID from Cuelinks/Network
+  orderAmount       BigInt            // In paise
+  networkCommission BigInt            // Raw commission from network in paise (100%)
+  cashbackAmount    BigInt            // User's share in paise (30% after platform split)
+  currency          String            @default("INR")
+  
+  status            ConversionStatus  @default(PENDING)
+  
+  // Fraud Prevention: Waiting Period
+  payableAt         DateTime?         // Date when funds become withdrawable (now + 60/90 days)
+  creditedAt        DateTime?         // Date when money was moved to wallet
+  
+  walletTransaction WalletTransaction?
+  referralTrigger   Referral?         @relation("FirstConversion")
+
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  // Prevent double-counting from networks
+  @@unique([networkId, networkTransactionId])
+  @@index([userId, status])
+  @@index([status, payableAt])
+}
+
+model WalletTransaction {
+  id                String            @id @default(uuid())
+  userId            String
+  user              User              @relation(fields: [userId], references: [id])
+  
+  amount            BigInt            // In paise
+  type              TransactionType
+  description       String?
+  metadata          Json?             // Audit trail / additional info
+
+  // Source of this transaction
+  conversionId      String?           @unique
+  conversion        Conversion?       @relation(fields: [conversionId], references: [id])
+  
+  withdrawalId      String?           @unique
+  withdrawal        Withdrawal?       @relation(fields: [withdrawalId], references: [id])
+  
+  referralId        String?           @unique
+  referral          Referral?         @relation(fields: [referralId], references: [id])
+
+  createdAt         DateTime          @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model Withdrawal {
+  id                String            @id @default(uuid())
+  userId            String
+  user              User              @relation(fields: [userId], references: [id])
+  
+  amount            BigInt            // In paise
+  method            String            // e.g., UPI, Bank Transfer
+  paymentDetails    Json              // Encrypted or structured details
+  status            WithdrawalStatus  @default(PENDING)
+  
+  processedAt       DateTime?
+  rejectionReason   String?
+
+  walletTransaction WalletTransaction?
+
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([userId, status])
+}
+
+model Referral {
+  id                String            @id @default(uuid())
+  
+  referrerId        String
+  referrer          User              @relation("Referrer", fields: [referrerId], references: [id])
+  
+  referredId        String            @unique
+  referredUser      User              @relation("ReferredUser", fields: [referredId], references: [id])
+  
+  // The "Trigger": The first confirmed conversion of the referred user
+  firstConversionId String?           @unique
+  firstConversion   Conversion?       @relation("FirstConversion", fields: [firstConversionId], references: [id])
+  
+  bonusAmount       BigInt            // In paise
+  isRewarded        Boolean           @default(false)
+  rewardedAt        DateTime?
+
+  walletTransaction WalletTransaction?
+
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([referrerId])
+}
+
+model Notification {
+  id                String            @id @default(uuid())
+  userId            String
+  user              User              @relation(fields: [userId], references: [id])
+  
+  type              NotificationType
+  title             String
+  message           String
+  isRead            Boolean           @default(false)
+  link              String?           // CTA link
+
+  createdAt         DateTime          @default(now())
+
+  @@index([userId, isRead])
+}
+
+model Admin {
+  id                String            @id @default(uuid())
+  email             String            @unique
+  password          String
+  role              AdminRole         @default(EDITOR)
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+}
+
+model UnmatchedConversion {
+  id                   String   @id @default(uuid())
+  networkId            String
+  networkTransactionId String
+  clickId              String?
+  payload              Json
+  status               String   @default("PENDING_MATCH")
+  retryCount           Int      @default(0)
+  
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model Wallet {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  balance   BigInt   @default(0) // In paise
+  
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}

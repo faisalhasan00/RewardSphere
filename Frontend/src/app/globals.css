@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FFF6EE;
+  --foreground: #1A1A1A;
+  --card: #FFFFFF;
+  --border: #E0E0E0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: #FF6A00;
+  --color-primary-dark: #D44E00;
+  --color-primary-light: #FFF0E6;
+
+  --color-money: #007A52;
+  --color-money-dark: #006342;
+  --color-fresh: #00C87A;
+  --color-money-light: #E6F8EF;
+
+  --color-star: #FFE033;
+  --color-heading: #1A1A1A;
+  --color-muted: #888888;
+  --color-card-border: #E0E0E0;
+  --color-footer-bg: #0C0C0C;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Custom Animations */
+@keyframes pulse-green {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+.nav-link-hover {
+  position: relative;
+}
+
+.nav-link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #FF6A00;
+  transition: all 0.25s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link-hover:hover::after {
+  width: 100%;
+}
+
+@keyframes marquee-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.animate-marquee-up {
+  display: flex;
+  flex-direction: column;
+  animation: marquee-up 30s linear infinite;
+}
+
+.animate-marquee-up:hover {
+  animation-play-state: paused;
+}
+
+@keyframes pulse-green {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.animate-pulse-green {
+  animation: pulse-green 1.5s infinite;
+}
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 30s linear infinite;
+}
