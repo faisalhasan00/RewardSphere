@@ -59,10 +59,10 @@ export default function ReferralPage() {
             </div>
 
             <div className="flex items-center gap-6 pt-4">
-               <button className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Share2 className="h-5 w-5" title="Share on Facebook" /></button>
-               <button className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Share2 className="h-5 w-5" title="Share on Twitter" /></button>
-               <button className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Share2 className="h-5 w-5" title="Share on WhatsApp" /></button>
-               <button className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Share2 className="h-5 w-5" title="More Options" /></button>
+               <button title="Share on Facebook" className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Share2 className="h-5 w-5" /></button>
+               <button title="Share on Twitter" className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Share2 className="h-5 w-5" /></button>
+               <button title="Share on WhatsApp" className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Share2 className="h-5 w-5" /></button>
+               <button title="More Options" className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Share2 className="h-5 w-5" /></button>
             </div>
           </div>
 
