@@ -2,13 +2,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, 
-  History, 
-  Wallet, 
-  ArrowUpRight, 
-  Users, 
-  Settings, 
+import {
+  LayoutDashboard,
+  History,
+  Wallet,
+  ArrowUpRight,
+  Users,
+  Settings,
   LogOut,
   ChevronRight
 } from 'lucide-react';
@@ -31,7 +31,7 @@ export const DashboardSidebar = () => {
     <aside className="w-64 bg-white border-r border-card-border flex flex-col h-full sticky top-0 overflow-y-auto">
       <div className="p-6">
         <Link href="/">
-           <img src="/Logo/Logo.png" alt="RewardSphere" className="h-8 w-auto object-contain" />
+          <img src="/Logo/Logo.png" alt="RewardSphere" className="h-8 w-auto object-contain" />
         </Link>
       </div>
 
@@ -39,13 +39,13 @@ export const DashboardSidebar = () => {
         {MENU_ITEMS.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <Link 
-              key={item.href} 
+            <Link
+              key={item.href}
               href={item.href}
               className={cn(
                 "group flex items-center justify-between px-3 py-3 rounded-xl text-sm font-bold transition-all",
-                isActive 
-                  ? "bg-primary text-white shadow-lg shadow-primary/20" 
+                isActive
+                  ? "bg-primary text-white shadow-lg shadow-primary/20"
                   : "text-muted hover:bg-primary-light hover:text-primary"
               )}
             >
@@ -60,7 +60,7 @@ export const DashboardSidebar = () => {
       </nav>
 
       <div className="p-4 mt-auto border-t border-card-border">
-        <button 
+        <button
           onClick={logout}
           className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition-colors"
         >

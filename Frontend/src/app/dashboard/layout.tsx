@@ -16,7 +16,7 @@ export default function DashboardLayout({
 
       <div className="flex flex-col flex-grow min-w-0">
         <DashboardHeader />
-        
+
         {/* Main Content Area */}
         <main className="flex-grow overflow-y-auto p-4 md:p-8 lg:p-10">
           <div className="max-w-7xl mx-auto h-full">

@@ -21,18 +21,18 @@ const TABS = ['All', 'Fashion', 'Electronics', 'Food', 'Travel', 'Beauty', 'Groc
 export const TopOffersStrip = () => {
   const [activeTab, setActiveTab] = useState('All');
 
-  const filteredOffers = activeTab === 'All' 
-    ? OFFERS 
+  const filteredOffers = activeTab === 'All'
+    ? OFFERS
     : OFFERS.filter(offer => offer.category === activeTab);
 
   return (
     <section className="bg-white py-12 md:py-20 border-b border-[#E0E0E0]">
       <div className="container mx-auto px-4 md:px-12">
-        
+
         {/* Section Header */}
         <div className="flex items-center justify-between gap-4 mb-10">
           <h2 className="text-[20px] md:text-[34px] font-[900] text-[#1A1A1A] tracking-tight">
-             Today&apos;s Top Deals
+            Today&apos;s Top Deals
           </h2>
           <Link href="/deals" className="flex items-center gap-1 text-primary font-black text-[13px] md:text-[15px] hover:underline">
             View All Deals <ChevronRight size={18} />
@@ -41,21 +41,21 @@ export const TopOffersStrip = () => {
 
         {/* Category Filter */}
         <div className="flex items-center gap-3 mb-10 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
-           {TABS.map((tab) => (
-             <button
-               key={tab}
-               onClick={() => setActiveTab(tab)}
-               suppressHydrationWarning
-               className={cn(
-                 "px-6 py-2.5 rounded-2xl text-[13px] font-[800] border transition-all whitespace-nowrap",
-                 activeTab === tab 
-                  ? "bg-[#FF6A00] text-white border-[#FF6A00] shadow-lg shadow-primary/10" 
+          {TABS.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              suppressHydrationWarning
+              className={cn(
+                "px-6 py-2.5 rounded-2xl text-[13px] font-[800] border transition-all whitespace-nowrap",
+                activeTab === tab
+                  ? "bg-[#FF6A00] text-white border-[#FF6A00] shadow-lg shadow-primary/10"
                   : "bg-[#F3F4F6] text-[#888888] border-transparent hover:border-[#E0E0E0]"
-               )}
-             >
-               {tab}
-             </button>
-           ))}
+              )}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
 
         {/* Offer Cards Grid - Mobile Minimalist Style */}
@@ -72,15 +72,15 @@ export const TopOffersStrip = () => {
               >
                 {/* Header: Store pill and Cashback badge */}
                 <div className="flex items-center justify-between mb-4">
-                   <div className="flex items-center gap-2">
-                      <div className="bg-[#F3F4F6] px-3 py-1.5 rounded-full border border-[#E0E0E0] text-[11px] font-black text-[#444444] uppercase tracking-wider flex items-center gap-2">
-                         <div className="h-4 w-4 rounded-full flex items-center justify-center text-[10px] text-white font-black" style={{ backgroundColor: offer.color }}>{offer.store[0]}</div>
-                         {offer.store}
-                      </div>
-                   </div>
-                   <div className="bg-[#E6F8EF] px-3 py-1.5 rounded-full text-[#007A52] text-[11px] font-black uppercase border border-[#007A52]/10">
-                      {offer.cashback}
-                   </div>
+                  <div className="flex items-center gap-2">
+                    <div className="bg-[#F3F4F6] px-3 py-1.5 rounded-full border border-[#E0E0E0] text-[11px] font-black text-[#444444] uppercase tracking-wider flex items-center gap-2">
+                      <div className="h-4 w-4 rounded-full flex items-center justify-center text-[10px] text-white font-black" style={{ backgroundColor: offer.color }}>{offer.store[0]}</div>
+                      {offer.store}
+                    </div>
+                  </div>
+                  <div className="bg-[#E6F8EF] px-3 py-1.5 rounded-full text-[#007A52] text-[11px] font-black uppercase border border-[#007A52]/10">
+                    {offer.cashback}
+                  </div>
                 </div>
 
                 {/* Title */}
@@ -90,13 +90,13 @@ export const TopOffersStrip = () => {
 
                 {/* Footer: Expiry and CTA */}
                 <div className="flex items-center justify-between pt-4 border-t border-[#F0F0F0] mt-auto">
-                   <div className="flex items-center gap-1.5 text-[#888888] text-[12px] font-medium">
-                      <Clock size={14} className="text-[#888888]" />
-                      Expires in {offer.expires}
-                   </div>
-                   <Link href={`/deals/${offer.id}`} className="text-primary font-black text-[13px] md:text-[14px] flex items-center gap-1 group-hover:gap-2 transition-all">
-                      Grab Deal <ArrowRight size={16} />
-                   </Link>
+                  <div className="flex items-center gap-1.5 text-[#888888] text-[12px] font-medium">
+                    <Clock size={14} className="text-[#888888]" />
+                    Expires in {offer.expires}
+                  </div>
+                  <Link href={`/deals/${offer.id}`} className="text-primary font-black text-[13px] md:text-[14px] flex items-center gap-1 group-hover:gap-2 transition-all">
+                    Grab Deal <ArrowRight size={16} />
+                  </Link>
                 </div>
               </motion.div>
             ))}
