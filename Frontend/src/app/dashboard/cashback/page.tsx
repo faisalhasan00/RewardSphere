@@ -113,7 +113,7 @@ export default function CashbackTrackerPage() {
                            </td>
                            <td className="px-8 py-6">
                               {activeTab === 'HISTORY' ? (
-                                 <span className="font-black text-money">₹{item.amount}</span>
+                                 <span className="font-black text-money">₹{item.amount / 100}</span>
                               ) : (
                                  <span className="text-sm text-muted font-medium">Session Tracked</span>
                               )}

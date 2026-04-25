@@ -31,6 +31,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         disabled={disabled || isLoading}
+        suppressHydrationWarning
         className={cn(
           'inline-flex items-center justify-center rounded-xl font-medium transition-all focus-within:ring-2 focus-within:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]',
           variants[variant],

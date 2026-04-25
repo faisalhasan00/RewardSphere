@@ -75,8 +75,9 @@ export const Header = () => {
                   className="flex-grow bg-transparent outline-none text-sm font-medium text-[#1A1A1A] placeholder:text-[#888888]"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  suppressHydrationWarning
                 />
-                <button className="bg-[#FF6A00] text-white px-4 py-1 rounded-full text-[12px] font-black hover:bg-[#D44E00] transition-colors ml-2">
+                <button className="bg-[#FF6A00] text-white px-4 py-1 rounded-full text-[12px] font-black hover:bg-[#D44E00] transition-colors ml-2" suppressHydrationWarning>
                    Search
                 </button>
              </div>
