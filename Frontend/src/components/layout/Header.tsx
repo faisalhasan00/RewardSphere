@@ -43,16 +43,16 @@ export const Header = () => {
   return (
     <>
     <div className={cn(
-      "sticky top-0 z-50 transition-shadow duration-300",
+      "sticky top-0 z-50 transition-shadow duration-300 bg-white md:rounded-none rounded-t-[32px]",
       isScrolled ? "shadow-[0_4px_12px_rgba(0,0,0,0.06)]" : ""
     )}>
-      {/* ─── TOP NAVBAR ─── */}
-      <nav className="h-[56px] bg-white/90 backdrop-blur-[12px] flex items-center px-4 sm:px-6 lg:px-8 border-none">
+      <nav className="fixed md:relative top-0 left-0 right-0 h-[56px] md:h-[64px] bg-white md:bg-white/90 md:backdrop-blur-[12px] flex items-center px-4 sm:px-6 lg:px-8 border-none z-[70] md:rounded-none rounded-t-[32px]">
         <div className="container mx-auto flex items-center justify-between gap-4">
           {/* Mobile Hamburger (Visible on Mobile only) */}
           <button 
             onClick={() => setIsMenuOpen(true)}
             className="md:hidden p-2 text-[#888888] hover:text-[#1A1A1A]"
+            suppressHydrationWarning
           >
             <Menu size={24} />
           </button>
@@ -75,9 +75,8 @@ export const Header = () => {
                   className="flex-grow bg-transparent outline-none text-sm font-medium text-[#1A1A1A] placeholder:text-[#888888]"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  suppressHydrationWarning
                 />
-                <button className="bg-[#FF6A00] text-white px-4 py-1 rounded-full text-[12px] font-black hover:bg-[#D44E00] transition-colors ml-2" suppressHydrationWarning>
+                <button className="bg-[#FF6A00] text-white px-4 py-1 rounded-full text-[12px] font-black hover:bg-[#D44E00] transition-colors ml-2">
                    Search
                 </button>
              </div>
@@ -86,7 +85,7 @@ export const Header = () => {
           {/* Right Side Items */}
           <div className="flex items-center gap-3 sm:gap-5">
              {/* Mobile Icons */}
-             <button className="md:hidden p-2 text-[#888888]">
+             <button className="md:hidden p-2 text-[#888888]" suppressHydrationWarning>
                 <Search size={22} />
              </button>
 

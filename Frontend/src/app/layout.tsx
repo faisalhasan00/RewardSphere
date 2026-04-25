@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { MobileFooterNav } from "@/components/layout/MobileFooterNav";
+import { MobileNav } from "@/components/layout/MobileNav";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 export default function RootLayout({
@@ -38,14 +38,16 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-screen flex flex-col bg-background text-foreground overflow-x-hidden pb-[60px] md:pb-0">
+      <body className="min-h-screen flex flex-col bg-[#F3F4F6] text-foreground overflow-x-hidden md:pb-0">
         <GoogleOAuthProvider clientId={googleClientId}>
-          <Header />
-          <main className="flex-grow">
-            {children}
-          </main>
+          <div className="flex-grow md:bg-transparent bg-white md:rounded-none rounded-t-[32px] relative">
+            <Header />
+            <main className="flex-grow">
+              <div className="pb-24 md:pb-0">{children}</div>
+              <MobileNav />
+            </main>
+          </div>
           <Footer />
-          <MobileFooterNav />
         </GoogleOAuthProvider>
       </body>
     </html>

@@ -132,19 +132,13 @@ export const Footer = () => {
              <div className="space-y-4">
                 <h4 className="text-xs font-[900] uppercase tracking-[0.15em] text-white/40 mb-4">Mobile Experience</h4>
                 <div className="space-y-3">
-                   <button className="w-full h-12 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3 px-4 hover:bg-white/10 transition-all text-left">
-                      <img src="/icons/playstore.png" alt="" className="h-6 w-6 grayscale" />
-                      <div>
-                         <span className="block text-[8px] opacity-40 uppercase leading-none">GET IT ON</span>
-                         <span className="text-[14px] font-bold leading-none">Google Play</span>
-                      </div>
+                   <button className="w-full h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center gap-3 hover:bg-white/10 hover:border-white/20 transition-all font-black text-[11px] uppercase tracking-widest" suppressHydrationWarning>
+                      <img src="/icons/playstore.png" alt="" className="h-5 w-auto" />
+                      Google Play
                    </button>
-                   <button className="w-full h-12 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3 px-4 hover:bg-white/10 transition-all text-left">
-                      <img src="/icons/appstore.png" alt="" className="h-6 w-6 grayscale" />
-                      <div>
-                         <span className="block text-[8px] opacity-40 uppercase leading-none">Download on</span>
-                         <span className="text-[14px] font-bold leading-none">App Store</span>
-                      </div>
+                   <button className="w-full h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center gap-3 hover:bg-white/10 hover:border-white/20 transition-all font-black text-[11px] uppercase tracking-widest" suppressHydrationWarning>
+                      <img src="/icons/appstore.png" alt="" className="h-5 w-auto" />
+                      App Store
                    </button>
                 </div>
              </div>

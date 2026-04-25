@@ -103,8 +103,8 @@ export const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           
-          {/* Left Column: Content */}
-          <div className="flex flex-col justify-center text-center lg:text-left z-10 w-full max-w-[640px] mx-auto lg:mx-0 order-1 lg:order-1">
+          {/* Left Column: Content (Hidden on Mobile, Visible on Desktop) */}
+          <div className="hidden lg:flex flex-col justify-center text-left z-10 w-full max-w-[640px] mx-auto lg:mx-0 order-1 lg:order-1">
             {/* Live Rewards Counter */}
             <div className="mb-4 inline-flex self-center lg:self-start items-center gap-2 bg-white border border-[#E0E0E0] rounded-full px-4 py-1.5 shadow-sm">
                <div className="relative flex h-2 w-2">
@@ -269,17 +269,17 @@ export const Hero = () => {
              </div>
 
              {/* Mobile-Friendly Store Tabs */}
-             <div className="flex items-center gap-2.5 overflow-x-auto pb-4 scrollbar-hide max-w-full -mx-4 px-4 sm:mx-0 sm:px-0">
+             <div className="flex items-center gap-3 overflow-x-auto pb-6 scrollbar-hide max-w-full -mx-4 px-4 sm:mx-0 sm:px-0">
                 {BANNERS.map((item, i) => (
                   <button
                     key={i}
                     onClick={() => setCurrentBanner(i)}
                     suppressHydrationWarning
                     className={cn(
-                      "flex-shrink-0 px-4 py-2 rounded-full text-[12px] sm:text-[13px] font-bold border transition-all whitespace-nowrap shadow-sm",
+                      "flex-shrink-0 px-5 py-2.5 rounded-2xl text-[12px] sm:text-[13px] font-[800] border transition-all whitespace-nowrap shadow-sm",
                       currentBanner === i 
-                        ? "bg-[#FF6A00] text-white border-[#FF6A00] shadow-[#FF6A00]/20" 
-                        : "bg-white text-[#888888] border-[#E0E0E0] hover:border-[#FF6A00] hover:text-[#FF6A00]"
+                        ? "bg-[#FF6A00] text-white border-[#FF6A00] shadow-lg shadow-[#FF6A00]/20 scale-105" 
+                        : "bg-[#F3F4F6] text-[#888888] border-[#E0E0E0] hover:border-[#FF6A00]"
                     )}
                   >
                     {item.store}
